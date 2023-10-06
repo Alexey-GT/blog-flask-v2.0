@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group">
+        <legend>{{ legend }}</legend>
+        {{ form.title.label }}
+        {% if form.title.errors %}
+        {{ form.title}}
+        {% for error in form.title.errors %}
+        {{ error }}
+        {% endfor %}
+        {% else %}
+        {{ form.title }}
+        {% endif %}
+        <div class="form-group">
+            {{ form.content.label }}
+            {% if form.content.errors %}
+            {{ form.content }}
+            {% for error in form.content.errors %}
+            {{ error }}
+            {% endfor %}
+            {% else %}
+            {{ form.content }}
+            {% endif %}
+        </div>
+    </fieldset>
+    <div class="form-group">
+        {{ form.submit }}
+    </div>
+</form>
+
+{% endblock content %}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    {% if title %}
+    <title>Flask-блог - {{ title }}</title>
+    {% else %}
+    <title>Flask-блог</title>
+    {% endif %}
+</head>
+<body>
+{% if current_user.is_authenticated %}
+<h4> Привет, {{ current_user.username }}!</h4>
+<a href="{{ url_for('posts.new_post') }}">Новая запись</a>
+<a href="{{ url_for('users.account') }}">Профиль</a>
+<a href="{{ url_for('posts.allpost') }}">Записи блога</a>
+<a href="{{url_for('users.logout') }}">Выйти</a>
+{% else %}
+<a href="{{ url_for('users.register')}}">Зарегистрироваться</a>
+<a href="{{url_for('users.login') }}">Войти</a>
+{% endif %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+{{ message }}
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+{% block content %}{% endblock %}
+</body>
+</html>

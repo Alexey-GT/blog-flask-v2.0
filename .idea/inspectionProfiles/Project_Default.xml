@@ -1,0 +1,13 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="myproject.myapp_2l.management.commands.create_user.myapp_2l" />
+          <option value="my_project.myapp_s.models.HeadsTails.objects" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
