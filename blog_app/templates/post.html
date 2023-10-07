@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+
+{% block content %}
+<br>
+<img src="{{ url_for('static', filename='profile_image/' + post.author.image_file) }}">
+</br>
+<a href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+<h4>{{ post.title }}</h4>
+<small>Опубликовано {{ post.date_posted.strftime('%A, %d %B %Y %I:%M %p') }}</small>
+<p>{{ post.content }}</p>
+{% if post.author == current_user %}
+{% if post.author == current_user %}
+<a href="{{url_for('posts.update_post', post_id=post.id) }}">Обновить</a>
+{% endif %}
+{% endif %}
+<form action="{{ url_for('posts.delete_post', post_id=post.id) }}" method="POST">
+    <input type="submit" value="Удалить">
+</form>
+
+{% if post.comments %}
+<h3>Комментарии: </h3>
+<p>{% for comment in post.comments | reverse %}
+<p style="font-size: 14px;">{{ comment.text_comment }}</p>
+<p><small>Автор: {{ comment.username }}</small>
+    <small>Дата: {{ comment.date_comment.strftime('%A, %d %B %Y %I:%M %p') }}</small></p>
+{% if comment.username == current_user.username %}
+<form action="{{ url_for('posts.delete_comment', comment_id=comment.id) }}" method="POST">
+    <input type="submit" value="Удалить">
+</form>
+{% endif %}
+{% endfor %}
+{% endif %}
+
+<h3>Оставьте комментарий</h3>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <span>Текст</span><textarea class="contact" name="comment" rows="5"></textarea>
+    {% if form.comment.errors %}
+    {% for error in form.comment.errors %}
+    {{ error }}
+    {% endfor %}
+    {% endif %}
+    <input class="submit" type="submit" name="submit" value="Сохранить">
+</form>
+{% endblock content %}
