@@ -3,6 +3,7 @@ from flask_login import current_user, login_required
 from blog_app import db
 from blog_app.models import Post, Comment
 from blog_app.posts.forms import PostForm, CommentForm
+from blog_app.users.utils import save_picture
 
 posts = Blueprint('posts', __name__)
 
@@ -19,18 +20,21 @@ def allpost():
 @login_required
 def new_post():
     form = PostForm()
+    picture_name = None
     if form.validate_on_submit():
+        if form.picture.data:
+            picture_name = save_picture(form.picture.data)
         post = Post(title=form.title.data, content=form.content.data,
-                    author=current_user)
+                    author=current_user, image_file=picture_name)
         db.session.add(post)
         db.session.commit()
         flash('Ваш пост создан!', 'success')
         return redirect(url_for('posts.allpost'))
     return render_template('create_post.html',
-                           title='Новый пост', form=form, legend='Новый пост')
+                           title='Новый пост', form=form, image_file=picture_name, legend='Новый пост')
 
 
-@posts.route("/post/<int:post_id>", methods=['GET', 'POST'] )
+@posts.route("/post/<int:post_id>", methods=['GET', 'POST'])
 def post(post_id):
     post = Post.query.get_or_404(post_id)
     form = CommentForm()
@@ -55,13 +59,19 @@ def update_post(post_id):
     if form.validate_on_submit():
         post.title = form.title.data
         post.content = form.content.data
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+            post.image_file = picture_file
         db.session.commit()
         flash('Ваш пост обновлен!', 'success')
         return redirect(url_for('posts.post', post_id=post.id))
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
-    return render_template('create_post.html', title='Обновление поста', form=form, legend='Обновление поста')
+        image_file = url_for('static', filename='profile_image/' +
+                                                post.image_file)
+    return render_template('create_post.html', title='Обновление поста', form=form, image_file=image_file,
+                           legend='Обновление поста')
 
 
 @posts.route("/post/<int:post_id>/delete", methods=['POST'])

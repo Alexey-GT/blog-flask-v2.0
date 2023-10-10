@@ -30,6 +30,7 @@ class Post(db.Model):
                                cascade='all, delete-orphan')
     image_file = db.Column(db.String(25), nullable=True, default='default.png')
 
+
     def __repr__(self):
         return f"Запись('{self.title}', '{self.date_posted}')"
 

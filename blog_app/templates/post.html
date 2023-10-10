@@ -8,6 +8,12 @@
 <a href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
 <h4>{{ post.title }}</h4>
 <small>Опубликовано {{ post.date_posted.strftime('%A, %d %B %Y %I:%M %p') }}</small>
+{% if post.image_file %}
+<div class="form-group">
+    <img src="{{ url_for('static', filename='profile_image/' + post.image_file) }}">
+</div>
+{% endif %}
+
 <p>{{ post.content }}</p>
 {% if post.author == current_user %}
 {% if post.author == current_user %}
@@ -21,7 +27,7 @@
 {% if post.comments %}
 <h3>Комментарии: </h3>
 <p>{% for comment in post.comments | reverse %}
-<p style="font-size: 14px;">{{ comment.text_comment }}</p>
+<p>{{ comment.text_comment }}</p>
 <p><small>Автор: {{ comment.username }}</small>
     <small>Дата: {{ comment.date_comment.strftime('%A, %d %B %Y %I:%M %p') }}</small></p>
 {% if comment.username == current_user.username %}
