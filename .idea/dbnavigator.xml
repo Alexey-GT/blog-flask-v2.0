@@ -20,13 +20,18 @@
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files />
+    <open-files>
+      <object connection-id="51672477-9aff-43b6-88e8-e1716f2539e1" object-ref="schemas/main/tables/comment" />
+      <object connection-id="51672477-9aff-43b6-88e8-e1716f2539e1" object-ref="schemas/main/tables/user" />
+      <object connection-id="51672477-9aff-43b6-88e8-e1716f2539e1" object-ref="schemas/main/tables/like" />
+    </open-files>
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="51672477-9aff-43b6-88e8-e1716f2539e1" dataset="main.post" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="51672477-9aff-43b6-88e8-e1716f2539e1" dataset="main.comment" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="51672477-9aff-43b6-88e8-e1716f2539e1" dataset="main.user" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="51672477-9aff-43b6-88e8-e1716f2539e1" dataset="main.alembic_version" active-filter-id="" />
+    <filter-actions connection-id="51672477-9aff-43b6-88e8-e1716f2539e1" dataset="main.like" active-filter-id="EMPTY_FILTER" />
   </component>
   <component name="DBNavigator.Project.ExecutionManager">
     <retain-sticky-names value="false" />

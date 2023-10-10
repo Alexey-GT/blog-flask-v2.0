@@ -1,8 +1,8 @@
 from flask import render_template, url_for, flash, redirect, request, abort, Blueprint
 from flask_login import current_user, login_required
 from blog_app import db
-from blog_app.models import Post, Comment
-from blog_app.posts.forms import PostForm, CommentForm
+from blog_app.models import Post, Comment, Like
+from blog_app.posts.forms import PostForm, CommentForm, LikeForm
 from blog_app.users.utils import save_picture
 
 posts = Blueprint('posts', __name__)
@@ -38,6 +38,8 @@ def new_post():
 def post(post_id):
     post = Post.query.get_or_404(post_id)
     form = CommentForm()
+    like_form = LikeForm()
+    like_count = Like.query.filter_by(post_id=post_id).count()
     if form.validate_on_submit():
         comment = Comment(text_comment=form.comment.data, post_id=post_id,
                           username=current_user.username)
@@ -46,7 +48,8 @@ def post(post_id):
         flash('Ваш комментарий добавлен!', 'success')
         return redirect(f'/post/{post_id}')
 
-    return render_template('post.html', title=post.title, post=post, form=form)
+    return render_template('post.html', title=post.title, post=post, like_form=like_form,
+                           like_count=like_count, form=form)
 
 
 @posts.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
@@ -68,8 +71,7 @@ def update_post(post_id):
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
-        image_file = url_for('static', filename='profile_image/' +
-                                                post.image_file)
+        image_file = url_for('static', filename='profile_image/' + post.image_file)
     return render_template('create_post.html', title='Обновление поста', form=form, image_file=image_file,
                            legend='Обновление поста')
 
@@ -96,3 +98,22 @@ def delete_comment(comment_id):
     db.session.commit()
     flash('Ваш комментарий был удален!', 'success')
     return redirect(url_for('posts.post', post_id=comment.post_id))
+
+
+@posts.route('/post/<string:post_id>/like', methods=('POST',))
+@login_required
+def like_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author == current_user:
+        flash('Вы не можете поставить себе лайк')
+    elif Like.query.filter_by(user_id=current_user.id, post_id=post_id).count():
+        Like.query.filter_by(user_id=current_user.id, post_id=post_id).delete()
+        db.session.commit()
+        flash('Вам не нравится этот пост.', 'success')
+    else:
+        like = Like(user_id=current_user.id, post_id=post_id)
+        db.session.add(like)
+        db.session.commit()
+        flash('Вам нравится этот пост.', 'success')
+
+    return redirect(url_for('posts.post', post_id=post_id))

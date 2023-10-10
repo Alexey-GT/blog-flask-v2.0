@@ -30,7 +30,6 @@ class Post(db.Model):
                                cascade='all, delete-orphan')
     image_file = db.Column(db.String(25), nullable=True, default='default.png')
 
-
     def __repr__(self):
         return f"Запись('{self.title}', '{self.date_posted}')"
 
@@ -39,8 +38,11 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text_comment = db.Column(db.String(500))
     date_comment = db.Column(db.DateTime, default=datetime.utcnow)
-    post_id = db.Column(db.Integer, db.ForeignKey('post.id'),
-                        nullable=False)
-    username = db.Column(db.String, db.ForeignKey('user.username'),
-                         nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+    username = db.Column(db.String, db.ForeignKey('user.username'), nullable=False)
 
+
+class Like(db.Model):
+    __table_args__ = (db.PrimaryKeyConstraint('user_id', 'post_id', name='CompositePkForLike'),)
+    user_id = db.Column(db.String(40), db.ForeignKey('user.id'), nullable=False)
+    post_id = db.Column(db.String(40), db.ForeignKey('post.id'), nullable=False)
