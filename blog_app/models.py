@@ -23,12 +23,12 @@ class User(db.Model, UserMixin):
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
-    date_posted = db.Column(db.DateTime, nullable=False,
-                            default=datetime.utcnow)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     comments = db.relationship('Comment', backref='title', lazy='select',
                                cascade='all, delete-orphan')
+    image_file = db.Column(db.String(25), nullable=True, default='default.png')
 
     def __repr__(self):
         return f"Запись('{self.title}', '{self.date_posted}')"
@@ -42,3 +42,4 @@ class Comment(db.Model):
                         nullable=False)
     username = db.Column(db.String, db.ForeignKey('user.username'),
                          nullable=False)
+
