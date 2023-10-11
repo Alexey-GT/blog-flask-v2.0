@@ -3,20 +3,20 @@
 
 {% block content %}
 <br>
-<img src="{{ url_for('static', filename='profile_image/' + post.author.image_file) }}">
+<img style="width: 100px;" src="{{ url_for('static', filename='profile_image/' + post.author.image_file) }}">
 </br>
-<a href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
-<h4>{{ post.title }}</h4>
+<small>Автор поста: </small><a href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+<h4><small>Заголовок поста: </small>{{ post.title }}</h4>
 <small>Опубликовано {{ post.date_posted.strftime('%A, %d %B %Y %I:%M %p') }}</small>
 {% if post.image_file %}
 <div class="form-group">
-    <img src="{{ url_for('static', filename='profile_image/' + post.image_file) }}">
+   <p>Изображение к посту </p><img   src="{{ url_for('static', filename='profile_image/' + post.image_file) }}">
 </div>
 {% endif %}
 
-<p>{{ post.content }}</p>
+<p>Текст поста: {{ post.content }}</p>
 <form action="{{ url_for('posts.like_post', post_id=post.id) }}" method="post">
-  {{ like_form.hidden_tag() }}
+  Поставь лайк))){{ like_form.hidden_tag() }}
      <button type="submit">
        <img style="width: 32px;" src="{{ url_for('static',filename='images/like.svg') }}" alt="...">
        {{ like_count if like_count > 0 }}
@@ -25,31 +25,31 @@
 
 {% if post.author == current_user %}
 {% if post.author == current_user %}
-<a href="{{url_for('posts.update_post', post_id=post.id) }}">Обновить</a>
+<a href="{{url_for('posts.update_post', post_id=post.id) }}">Обновить пост</a>
 {% endif %}
 {% endif %}
 <form action="{{ url_for('posts.delete_post', post_id=post.id) }}" method="POST">
-    <input type="submit" value="Удалить">
+    <input type="submit" value="Удалить пост">
 </form>
 
 {% if post.comments %}
-<h3>Комментарии: </h3>
-<p>{% for comment in post.comments | reverse %}
-<p>{{ comment.text_comment }}</p>
+<h4>Комментарии: </h4>
+{% for comment in post.comments | reverse %}
+<p><small>Текст комментария: </small>{{ comment.text_comment }}</p>
 <p><small>Автор: {{ comment.username }}</small>
     <small>Дата: {{ comment.date_comment.strftime('%A, %d %B %Y %I:%M %p') }}</small></p>
 {% if comment.username == current_user.username %}
 <form action="{{ url_for('posts.delete_comment', comment_id=comment.id) }}" method="POST">
-    <input type="submit" value="Удалить">
+    <input type="submit" value="Удалить комментарий">
 </form>
 {% endif %}
 {% endfor %}
 {% endif %}
 
-<h3>Оставьте комментарий</h3>
+<h4>Оставьте комментарий</h4>
 <form action="" method="post">
     {{ form.hidden_tag() }}
-    <span>Текст</span><textarea class="contact" name="comment" rows="5"></textarea>
+    <span></span><textarea class="contact" name="comment" rows="5"></textarea>
     {% if form.comment.errors %}
     {% for error in form.comment.errors %}
     {{ error }}

@@ -14,10 +14,10 @@
 <a href="{{ url_for('posts.new_post') }}">Новая запись</a>
 <a href="{{ url_for('users.account') }}">Профиль</a>
 <a href="{{ url_for('posts.allpost') }}">Записи блога</a>
-<a href="{{url_for('users.logout') }}">Выйти</a>
+<a href="{{ url_for('users.logout') }}">Выйти</a>
 {% else %}
-<a href="{{ url_for('users.register')}}">Зарегистрироваться</a>
-<a href="{{url_for('users.login') }}">Войти</a>
+<a href="{{ url_for('users.register') }}">Зарегистрироваться</a>
+<a href="{{ url_for('users.login') }}">Войти</a>
 {% endif %}
 
 {% with messages = get_flashed_messages(with_categories=true) %}
