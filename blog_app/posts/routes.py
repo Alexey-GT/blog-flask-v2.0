@@ -28,7 +28,7 @@ def new_post():
                     author=current_user, image_file=picture_name)
         db.session.add(post)
         db.session.commit()
-        flash('Ваш пост создан!', 'success')
+        flash('Ваш пост создан!')
         return redirect(url_for('posts.allpost'))
     return render_template('create_post.html',
                            title='Новый пост', form=form, image_file=picture_name, legend='Новый пост')
@@ -45,7 +45,7 @@ def post(post_id):
                           username=current_user.username)
         db.session.add(comment)
         db.session.commit()
-        flash('Ваш комментарий добавлен!', 'success')
+        flash('Ваш комментарий добавлен!')
         return redirect(f'/post/{post_id}')
 
     return render_template('post.html', title=post.title, post=post, like_form=like_form,
@@ -66,7 +66,7 @@ def update_post(post_id):
             picture_file = save_picture(form.picture.data)
             post.image_file = picture_file
         db.session.commit()
-        flash('Ваш пост обновлен!', 'success')
+        flash('Ваш пост обновлен!')
         return redirect(url_for('posts.post', post_id=post.id))
     elif request.method == 'GET':
         form.title.data = post.title
@@ -84,7 +84,7 @@ def delete_post(post_id):
         abort(403)
     db.session.delete(post)
     db.session.commit()
-    flash('Ваш пост был удален!', 'success')
+    flash('Ваш пост был удален!')
     return redirect(url_for('posts.allpost'))
 
 

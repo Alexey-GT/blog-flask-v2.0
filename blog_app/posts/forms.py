@@ -17,3 +17,6 @@ class CommentForm(FlaskForm):
 
 class LikeForm(FlaskForm):
     submit = SubmitField('Создать')
+
+
+

@@ -28,4 +28,5 @@ def create_app():
     app.register_blueprint(main)
     app.register_blueprint(users)
     app.register_blueprint(errors)
+
     return app

@@ -46,13 +46,13 @@ class UpdateAccountForm(FlaskForm):
         if username.data != current_user.username:
             user = User.query.filter_by(username=username.data).first()
             if user:
-                raise ValidationError('Это имя занято. Пожалуйста, выберите другое')
+                raise ValidationError('Это имя занято! Пожалуйста, выберите другое!')
 
     def validate_email(self, email):
         if email.data != current_user.email:
             user = User.query.filter_by(email=email.data).first()
             if user:
-                raise ValidationError('Этот email занят Пожалуйста, выберите другой')
+                raise ValidationError('Этот email занят! Пожалуйста, выберите другой!')
 
 
 class RequestResetForm(FlaskForm):
@@ -62,9 +62,7 @@ class RequestResetForm(FlaskForm):
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user is None:
-            raise ValidationError('Аккаунт с данным email-адресом '
-                                  'отсутствует. '
-                                  'Вы можете зарегистрировать его')
+            raise ValidationError('Аккаунт с данным email-адресом отсутствует')
 
 
 class ResetPasswordForm(FlaskForm):

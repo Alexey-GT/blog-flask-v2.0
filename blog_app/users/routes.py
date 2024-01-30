@@ -19,7 +19,7 @@ def register():
         user = User(username=form.username.data, email=form.email.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        flash('Ваша учетная запись была создана! Теперь вы можете войти в систему', 'success')
+        flash('Ваша учетная запись была создана! Теперь вы можете войти в систему')
         return redirect(url_for('users.login'))
     return render_template('register.html', title='Регистрация', form=form)
 
@@ -36,9 +36,8 @@ def login():
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('posts.allpost'))
-            # return redirect(url_for('main.home'))
         else:
-            flash('Войти не удалось. Пожалуйста, проверьте электронную почту и пароль', 'внимание')
+            flash('Войти не удалось. Пожалуйста, проверьте электронную почту и пароль')
     return render_template('login.html', title='Авторизация', form=form)
 
 
@@ -53,7 +52,7 @@ def account():
         current_user.username = form.username.data
         current_user.email = form.email.data
         db.session.commit()
-        flash('Ваш аккаунт был обновлен!', 'success')
+        flash('Ваш аккаунт был обновлен!')
         return redirect(url_for('users.account'))
     elif request.method == 'GET':
         form.username.data = current_user.username
