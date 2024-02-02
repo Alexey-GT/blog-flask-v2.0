@@ -96,7 +96,7 @@ def delete_comment(comment_id):
         abort(403)
     db.session.delete(comment)
     db.session.commit()
-    flash('Ваш комментарий был удален!', 'success')
+    flash('Ваш комментарий был удален!')
     return redirect(url_for('posts.post', post_id=comment.post_id))
 
 
@@ -109,11 +109,11 @@ def like_post(post_id):
     elif Like.query.filter_by(user_id=current_user.id, post_id=post_id).count():
         Like.query.filter_by(user_id=current_user.id, post_id=post_id).delete()
         db.session.commit()
-        flash('Вам не нравится этот пост.', 'success')
+        flash('Вам не понравился этот пост.')
     else:
         like = Like(user_id=current_user.id, post_id=post_id)
         db.session.add(like)
         db.session.commit()
-        flash('Вам нравится этот пост.', 'success')
+        flash('Вам нравится этот пост.')
 
     return redirect(url_for('posts.post', post_id=post_id))
